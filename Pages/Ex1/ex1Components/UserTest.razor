@@ -1,0 +1,62 @@
+@inject Ex1Controller _controller
+
+<h3>UserTest</h3>
+
+<input type="number" required size="10" @bind="weight1">
+<input type="number" required size="10" @bind="weight2">
+<input type="number" required size="10" @bind="weight3">
+<button @onclick="CalculateValue">Calculate Value</button>
+<div>Neuron Result is: @UserResult</div>
+<button @onclick="CalculateAllValue">Calculate All Values</button>
+@if (Calculated)
+{
+    <div style="display: inline-block;">
+        <table>
+            <tr>
+                <th>Expected result</th>
+                <th>Neuron output</th>
+                <th>Is Correct</th>
+            </tr>
+            @for (var i = 0; i < _controller.Table.Count; i++)
+            {
+                <tr>
+                    <td>@_controller.Table[i].Item1</td>
+                    <td>@AllResults[i]</td>
+                    <td>@(Math.Abs(_controller.Table[i].Item1 - AllResults[i]) < 0.00001)</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@code {
+    int weight1;
+    int weight2;
+    int weight3;
+
+    List<double> AllResults { get; set; } = new List<double>();
+
+    double UserResult;
+
+    private void CalculateAllValue()
+    {
+        AllResults = new List<double>();
+        var results = _controller.UseNeuron(_controller.Table);
+        foreach (var result in results)
+        {
+            AllResults.Add(Math.Abs(result - 1) < 0.000001 ? 1 : 0);
+        }
+        Calculated = true;
+        StateHasChanged();
+    }
+
+    private void CalculateValue()
+    {
+        UserResult = _controller.UseNeuron(new []{weight1, weight2, weight3});
+        UserResult = Math.Abs(UserResult - 1) < 0.000001 ? 1 : 0;
+        StateHasChanged();
+    }
+
+    public bool Calculated { get; set; }
+
+}

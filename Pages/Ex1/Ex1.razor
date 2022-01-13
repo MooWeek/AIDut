@@ -1,0 +1,28 @@
+@page "/ex1"
+@inject Ex1Controller _controller
+
+@using aidut.Pages.Ex1.ex1Components
+
+<div style="white-space: nowrap">
+    <TrustTable Table="@_controller.Table"></TrustTable>
+    <RandomWeights></RandomWeights>
+    
+    <button @onclick="StartLearning">Start Learning</button>
+    <textarea rows="15" cols="50">
+        @string.Join("\n", _controller.Learning)
+    </textarea>
+</div>
+
+<UserTest></UserTest>
+
+
+@code {
+    double middleError;
+    
+    private void StartLearning()
+    {
+        middleError = _controller.StartLearn(_controller.Table, 50000);
+        StateHasChanged();
+    }
+
+}

@@ -1,0 +1,24 @@
+@inject Ex1Controller _controller
+
+<div style="display: inline-block; padding-left: 50px; padding-bottom: 100px">
+    <h3>RandomWeights</h3>
+    <input type="number" required size="10" @bind="_controller.Weights[0]">
+    <input type="number" required size="10" @bind="_controller.Weights[1]">
+    <input type="number" required size="10" @bind="_controller.Weights[2]">
+    <button @onclick="GenerateRandomWeights">Generate weghts</button>
+</div>
+
+@code {
+
+    void GenerateRandomWeights()
+    {
+        var rnd = new Random();
+        var weights = new double[3];
+        for (int i = 0; i < _controller.Weights.Length; i++)
+        {
+            weights[i] = Math.Round(rnd.NextDouble(), 4);
+        }
+        _controller.Weights = weights;
+        StateHasChanged();
+    }
+}

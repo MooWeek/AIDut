@@ -1,0 +1,29 @@
+<h3>Таблиця істинності</h3>
+<div style="display: inline-block;">
+    <table>
+        <tr>
+            <th>x1</th>
+            <th>x2</th>
+            <th>x3</th>
+            <th>(x1+x2)*x3</th>
+            <th>result</th>
+        </tr>
+        @foreach (var row in Table)
+        {
+            <tr>
+                @foreach (var item in row.Item2)
+                {
+                    <td>@item</td>
+                }
+                <td>@row.Item1</td>
+                <td>@Convert.ToBoolean(row.Item1)</td>
+            </tr>
+        }
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public List<Tuple<int, int[]>> Table { get; set; }
+
+}
